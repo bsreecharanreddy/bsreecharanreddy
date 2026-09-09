@@ -1,6 +1,6 @@
 # Sree
 
-Senior software/AI engineer, 10+ years across backend systems, data
+Senior software/AI engineer, 11+ years across backend systems, data
 platforms, and cloud — currently focused on the infrastructure AI actually
 runs on: correct feature pipelines, reproducible training data, and
 bounded, auditable model behaviour rather than black boxes making binding
