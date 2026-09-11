@@ -47,6 +47,16 @@ Clone to a green run in **4 m 28 s**.
 - **Governance:** Unity Catalog, column-level lineage published with its
   own blind spots stated on it, and data contracts enforced as CI failures
   rather than written down as documents
+- **Agent layer, read-only:** four MCP tools behind a tool gateway
+  (allow-list, append-only audit log) and a model gateway (capability
+  records, one explicit fallback), fronted by a bounded agent capped at
+  six model requests per run
+- **Grounding verification, no LLM judge:** every number in an agent's
+  answer is traced to the tool call that produced it, and — the harder
+  check — every claim *about* that number is traced to the specific field
+  it actually means. Built after my own agent produced a real false claim
+  under a green "every number came from a tool" rule; the fix was a
+  schema rename plus a relationship check, not a stricter number check
 
 What it does *not* do is written down as plainly as what it does —
 including the numbers that were later found wrong and corrected in place.
