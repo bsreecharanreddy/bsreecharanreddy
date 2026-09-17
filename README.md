@@ -82,6 +82,38 @@ Applied to benefits eligibility as the vehicle for exercising that
 architecture end to end — the engineering pattern is the point, the
 domain is the example.
 
+## [Dispatch](https://github.com/bsreecharanreddy/dispatch) — inference engine for MoE token routing
+
+Mixture-of-Experts models (DeepSeek, Llama, Mixtral, Grok, Qwen) get a
+model's full capacity at a fraction of the compute by routing each token to
+a handful of expert sub-networks out of many — the hard part is making
+that routing fast under real, skewed per-expert load. Built solo: a
+from-scratch Triton kernel, real multi-GPU expert-parallel serving, a
+disaggregated prefill/decode scheduler, and an upstreamed open-source
+benchmark contribution, all measured on rented GPU hardware, cost included.
+
+- **Custom Triton grouped-GEMM kernel**, proven numerically correct against
+  a reference implementation on real hardware before any speed claim —
+  then measured **~65-67% faster** decode throughput than DeepSeek's own
+  stock MoE forward pass, at perfect logit agreement
+- **Real multi-GPU expert-parallel serving** over DeepSeek's own DeepEP
+  library, byte-exact against a single-GPU reference — which also
+  *disproved* this project's own kernel-crossover hypothesis at real
+  scale, reported as the null result it was rather than smoothed over
+- **Disaggregated prefill/decode** across 4 real GPUs, correctness-gated on
+  both topologies, with a genuinely mixed throughput result reported
+  honestly instead of forced into a win
+- **An open-source contribution:** an opt-in skewed-load benchmark flag
+  upstreamed to vLLM after finding neither vLLM's nor SGLang's official MoE
+  benchmarks modeled it —
+  [vllm-project/vllm#57100](https://github.com/vllm-project/vllm/pull/57100)
+- **Cost discipline:** five rented-GPU sessions, **$25.74 total**, every
+  one under its stated cap, every number measured rather than estimated
+
+Full write-ups, including every bug found on real hardware and every null
+or mixed result:
+[`docs/findings/`](https://github.com/bsreecharanreddy/dispatch/tree/main/docs/findings).
+
 ## Background
 
 Production engineering across Java, Python, SQL, PySpark, data pipelines,
